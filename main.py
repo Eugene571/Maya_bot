@@ -42,16 +42,16 @@ main_menu = ReplyKeyboardMarkup(
 user_state = {}
 
 # Обработчик команды /start
+@dp.message(commands=['start'])
+async def start(message: types.Message):
+    await message.answer("Привет! Я бот для заказа астрологических продуктов от Нади. Выберите продукт:", reply_markup=main_menu)
+    user_state[message.from_user.id] = {'step': 'product'}
+
+# Обработчик сообщений
 @dp.message()
 async def handle_message(message: types.Message):
     user_id = message.from_user.id
     text = message.text
-
-    # Обработка команды /start
-    if text == '/start':
-        await message.answer("Привет! Я бот для заказа астрологических продуктов от Нади. Выберите продукт:", reply_markup=main_menu)
-        user_state[user_id] = {'step': 'product'}
-        return
 
     # Обработка выбора продукта
     if user_state.get(user_id, {}).get('step') == 'product':
@@ -90,6 +90,6 @@ async def handle_message(message: types.Message):
         else:
             await message.answer("Введите город в правильном формате.")
 
+# Запуск бота
 if __name__ == '__main__':
-    from aiogram import executor
-    executor.start_polling(dp, skip_updates=True)
+    dp.run_polling(skip_updates=True)
