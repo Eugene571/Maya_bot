@@ -1,5 +1,6 @@
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.filters import Command, Text
 import logging
 from dotenv import load_dotenv
 import os
@@ -39,29 +40,31 @@ main_menu = ReplyKeyboardMarkup(
 )
 
 # Начало работы с ботом
-@dp.message(commands=['start'])
+@dp.message(Command('start'))
 async def start(message: types.Message):
     await message.answer("Привет! Я бот для заказа астрологических продуктов от Нади. Выберите продукт:", reply_markup=main_menu)
 
 # Запрос даты рождения после выбора продукта
-@dp.message(lambda message: message.text in products)
+@dp.message(Text(text=[product for product in products.keys()]))
 async def ask_birth_date(message: types.Message):
     selected_product = message.text
     price = products[selected_product]
     await message.answer(f"Вы выбрали {selected_product}. Стоимость: {price} руб.\nВведите дату вашего рождения (в формате ДД.ММ.ГГГГ):")
 
 # Запрос времени рождения
-@dp.message(lambda message: message.text.count('.') == 2)
+@dp.message(Text(contains='.'))
 async def ask_birth_time(message: types.Message):
-    await message.answer("Введите время вашего рождения (в формате ЧЧ:ММ):")
+    if message.text.count('.') == 2:
+        await message.answer("Введите время вашего рождения (в формате ЧЧ:ММ):")
 
 # Запрос места рождения
-@dp.message(lambda message: ':' in message.text)
+@dp.message(Text(contains=':'))
 async def ask_birth_place(message: types.Message):
-    await message.answer("Введите город вашего рождения:")
+    if ':' in message.text:
+        await message.answer("Введите город вашего рождения:")
 
 # Подтверждение заказа после получения всех данных
-@dp.message(lambda message: message.text.isalpha())
+@dp.message(Text(is_alpha=True))
 async def confirm_order(message: types.Message):
     await message.answer("Спасибо! Ваш заказ передан Наде. Она свяжется с вами в ближайшее время.")
 
