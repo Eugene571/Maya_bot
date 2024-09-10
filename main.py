@@ -8,6 +8,7 @@ import os
 
 load_dotenv()
 API_TOKEN = os.getenv('BOT_API_TOKEN')
+NADIAMAEVSKAYA_CHAT_ID = os.getenv('NADIAMAEVSKAYA_CHAT_ID')
 
 # Логирование
 logging.basicConfig(level=logging.INFO)
