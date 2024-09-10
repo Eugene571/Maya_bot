@@ -100,6 +100,10 @@ async def confirm_order(message: types.Message):
     else:
         await message.answer("Введите город в правильном формате.")
 
-# Запуск бота
+async def main():
+    # Запуск бота
+    await dp.start_polling(skip_updates=True)
+
 if __name__ == '__main__':
-    dp.start_polling(skip_updates=True)
+    # Запуск главной функции через event loop
+    asyncio.run(main())
