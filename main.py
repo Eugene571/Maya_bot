@@ -45,7 +45,7 @@ async def start(message: types.Message):
     await message.answer("Привет! Я бот для заказа астрологических продуктов от Нади. Выберите продукт:", reply_markup=main_menu)
 
 # Запрос даты рождения после выбора продукта
-@dp.message(Text(text=[product for product in products.keys()]))
+@dp.message(Text(contains=products.keys()))
 async def ask_birth_date(message: types.Message):
     selected_product = message.text
     price = products[selected_product]
@@ -64,9 +64,10 @@ async def ask_birth_place(message: types.Message):
         await message.answer("Введите город вашего рождения:")
 
 # Подтверждение заказа после получения всех данных
-@dp.message(Text(is_alpha=True))
+@dp.message(Text(contains=''))  # Можно изменить условие в зависимости от вашего логического условия
 async def confirm_order(message: types.Message):
-    await message.answer("Спасибо! Ваш заказ передан Наде. Она свяжется с вами в ближайшее время.")
+    if message.text.isalpha():
+        await message.answer("Спасибо! Ваш заказ передан Наде. Она свяжется с вами в ближайшее время.")
 
 if __name__ == '__main__':
     from aiogram import executor
