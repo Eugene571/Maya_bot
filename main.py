@@ -12,12 +12,11 @@ API_TOKEN = os.getenv('BOT_API_TOKEN')
 # Логирование
 logging.basicConfig(level=logging.INFO)
 
-# Инициализация бота и диспетчера
+# Инициализация бота
 bot = Bot(token=API_TOKEN)
-dp = Dispatcher()
 
-# Регистрируем бот в диспетчере
-dp.update.middleware(bot)
+# Инициализация диспетчера
+dp = Dispatcher(bot)
 
 # Список продуктов и их цены
 products = {
@@ -106,7 +105,7 @@ async def confirm_order(message: types.Message):
 
 async def main():
     # Запуск бота
-    await dp.start_polling(bot=bot, skip_updates=True)
+    await dp.start_polling()
 
 if __name__ == '__main__':
     # Запуск главной функции через event loop
