@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 
 # Инициализация бота и диспетчера
 bot = Bot(token=API_TOKEN)
-dp = Dispatcher()
+dp = Dispatcher(bot)
 
 # Список продуктов и их цены
 products = {
@@ -31,9 +31,12 @@ products = {
 }
 
 # Главное меню с кнопками
-main_menu = ReplyKeyboardMarkup(resize_keyboard=True)
-for product in products.keys():
-    main_menu.add(KeyboardButton(product))
+main_menu = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(product)] for product in products.keys()
+    ],
+    resize_keyboard=True
+)
 
 
 # Начало работы с ботом
