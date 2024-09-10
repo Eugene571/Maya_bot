@@ -96,8 +96,29 @@ async def ask_birth_place(message: types.Message):
 async def confirm_order(message: types.Message):
     user_id = message.from_user.id
     if is_city_name(message.text):
+        # Отправка подтверждения пользователю
         await message.answer("Спасибо! Ваш заказ передан Наде. Она свяжется с вами в ближайшее время.")
-        user_state.pop(user_id, None)  # Очистка состояния пользователя после завершения
+        
+        # Формирование сообщения с деталями заказа
+        user_info = user_state.get(user_id, {})
+        product = user_info.get('product', 'Неизвестен')
+        birth_date = user_info.get('birth_date', 'Не указана')
+        birth_time = user_info.get('birth_time', 'Не указано')
+        birth_place = user_info.get('birth_place', 'Не указан')
+        
+        order_message = (
+            f"Новый заказ от пользователя @{message.from_user.username}:\n"
+            f"Продукт: {product}\n"
+            f"Дата рождения: {birth_date}\n"
+            f"Время рождения: {birth_time}\n"
+            f"Место рождения: {birth_place}\n"
+        )
+        
+        # Отправка сообщения в чат с Надей
+        await bot.send_message(NADIAMAEVSKAYA_CHAT_ID, order_message)
+        
+        # Очистка состояния пользователя после завершения
+        user_state.pop(user_id, None)
     else:
         await message.answer("Введите город в правильном формате.")
 
