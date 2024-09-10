@@ -1,7 +1,6 @@
 import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-from aiogram.utils import executor
 import logging
 from dotenv import load_dotenv
 
@@ -69,4 +68,5 @@ async def confirm_order(message: types.Message):
     await message.answer("Спасибо! Ваш заказ передан Наде. Она свяжется с вами в ближайшее время.")
 
 if __name__ == '__main__':
+    from aiogram import executor
     executor.start_polling(dp, skip_updates=True)
