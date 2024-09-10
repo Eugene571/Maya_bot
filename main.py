@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 
 # Инициализация бота и диспетчера
 bot = Bot(token=API_TOKEN)
-dp = Dispatcher()
+dp = Dispatcher(bot)  # Передаем bot в Dispatcher
 
 # Список продуктов и их цены
 products = {
