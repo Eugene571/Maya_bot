@@ -33,7 +33,7 @@ products = {
 # Главное меню с кнопками
 main_menu = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(product)] for product in products.keys()
+        [KeyboardButton(text=product)] for product in products.keys()
     ],
     resize_keyboard=True
 )
