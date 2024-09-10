@@ -42,7 +42,7 @@ main_menu = ReplyKeyboardMarkup(
 user_state = {}
 
 # Обработчик команды /start
-@dp.message(commands=['start'])
+@dp.message(commands=('start'))
 async def start(message: types.Message):
     await message.answer("Привет! Я бот для заказа астрологических продуктов от Нади. Выберите продукт:", reply_markup=main_menu)
     user_state[message.from_user.id] = {'step': 'product'}
